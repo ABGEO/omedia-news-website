@@ -16,4 +16,23 @@ class DefaultController extends AbstractController
             'news' => $news,
         ]);
     }
+
+    /**
+     * Show Single news
+     *
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showSingleNews($id)
+    {
+        $doctrine = $this->getDoctrine();
+        $news = $doctrine->getRepository(News::class)->find($id);
+
+        if (!$news)
+            throw $this->createNotFoundException("News $id not found!");
+
+        return $this->render('default/single_news.html.twig', [
+            'news' => $news,
+        ]);
+    }
 }

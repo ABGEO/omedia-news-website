@@ -2,6 +2,10 @@ index:
     path: /
     controller: App\Controller\DefaultController::index
 
+single_news:
+  path: /news/{id}
+  controller: App\Controller\DefaultController::showSingleNews
+
 #Authorization
 app_register:
   path: /register
