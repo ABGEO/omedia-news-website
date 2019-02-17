@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\News;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -111,5 +112,19 @@ class AdminController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('admin_users');
+    }
+
+    /**
+     * Show All News
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showNews()
+    {
+        $doctrine = $this->getDoctrine();
+        $news = $doctrine->getRepository(News::class)->findAll();
+
+        return $this->render('admin/news.html.twig', [
+            'news' => $news
+        ]);
     }
 }

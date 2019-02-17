@@ -16,6 +16,7 @@ app_logout:
 #End Authorization
 
 #Admin-Panel
+#User
 admin:
   path: /admin
   controller: App\Controller\AdminController::index
@@ -35,4 +36,11 @@ admin_edit_user:
 admin_save_user:
   path: /admin/saveUser/{id}
   controller: App\Controller\AdminController::saveUser
+#End User
+
+#News
+admin_news:
+  path: /admin/news
+  controller: App\Controller\AdminController::showNews
+#End News
 #End Admin-Panel

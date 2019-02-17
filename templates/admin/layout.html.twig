@@ -6,7 +6,9 @@
     <h1>Admin-Panel</h1>
 
     <nav>
-        <a href="{{ path('admin_users') }}">Users</a>
+        <a href="{{ path('admin') }}">Main</a> |
+        <a href="{{ path('admin_users') }}">Users</a> |
+        <a href="{{ path('admin_news') }}">News</a>
     </nav>
 
     {% block admin_content %}{% endblock %}
