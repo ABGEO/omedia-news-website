@@ -27,4 +27,12 @@ admin_users:
 admin_remove_user:
   path: /admin/removeUser/{id}
   controller: App\Controller\AdminController::removeUser
+
+admin_edit_user:
+  path: /admin/editUser/{id}
+  controller: App\Controller\AdminController::editUser
+
+admin_save_user:
+  path: /admin/saveUser/{id}
+  controller: App\Controller\AdminController::saveUser
 #End Admin-Panel

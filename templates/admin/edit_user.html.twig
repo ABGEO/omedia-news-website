@@ -1,0 +1,35 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block admin_content %}
+    <h2>Edit {{ user.username }}</h2>
+
+    <form name="saveUser" method="post" action="{{ path('admin_save_user', {'id': user.id}) }}">
+        <input type="hidden" name="token" value="{{ csrf_token('delete-item') }}" />
+
+        <label>
+            Username:<br>
+            <input type="text" name="username" value="{{ user.username }}">
+        </label>
+
+        <br><br>
+
+        <label>
+            Role:
+            <select name="role">
+                <option value="ROLE_USER">User</option>
+                <option value="ROLE_ADMIN">Admin</option>
+            </select>
+        </label>
+
+        <br><br>
+
+        <label>
+            New Password:<br>
+            <input type="password" name="password">
+        </label>
+
+        <br><br>
+
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}
