@@ -1,7 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}News{% endblock %}
 
 {% block body %}
-<h1>Hello, World!</h1>
+    <h1>News!</h1>
+
+    {% for news in news %}
+        <article>
+            <h1><a href="#">{{ news.title }}</a></h1>
+
+            <h2>{{ news.subTitle }}</h2>
+            <p>{{ news.tags }}</p>
+
+            <div>
+                {{ news.body }}
+            </div>
+
+            <br>
+            <a href="#">Read More -></a>
+            <hr>
+        </article>
+    {% endfor %}
 {% endblock %}
