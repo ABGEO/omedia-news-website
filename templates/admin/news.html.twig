@@ -30,7 +30,7 @@
                 <td>{{ news.subTitle }}</td>
                 <td>{{ news.tags }}</td>
                 <td>
-                    <a href="#">Edit</a> /
+                    <a href="{{ path('admin_edit_news', {'id': news.id}) }}">Edit</a> /
                     <a href="{{ path('admin_remove_news', {'id': news.id}) }}">Remove</a>
                 </td>
             </tr>

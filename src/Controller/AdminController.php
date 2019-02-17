@@ -138,7 +138,31 @@ class AdminController extends AbstractController
      */
     public function addNews()
     {
-        return $this->render('admin/add_news.html.twig');
+        return $this->render('admin/add_news.html.twig', [
+            'edit' => false,
+            'news' => null
+        ]);
+    }
+
+    /**
+     * Show News editing form
+     *
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editNews($id)
+    {
+        $doctrine = $this->getDoctrine();
+
+        $news = $doctrine->getRepository(News::class)->find($id);
+
+        if (!$news)
+            throw $this->createNotFoundException("News not found!");
+
+        return $this->render('admin/add_news.html.twig', [
+            'edit' => true,
+            'news' => $news
+        ]);
     }
 
     /**
@@ -162,10 +186,17 @@ class AdminController extends AbstractController
         $image = $files->get('image');
         $fileName = null;
 
-        if ($this->isCsrfTokenValid('add-news', $token)) {
+        $csrfId = $id == 0 ? 'add-news' : 'edit-news';
+
+        if ($this->isCsrfTokenValid($csrfId, $token)) {
             if ($image) {
                 $filePath = __DIR__ . "/../../public/uploads/images/";
                 $fileName = md5($image->getBasename().time()).'.'.$image->guessExtension();
+
+                $fileSystem = new Filesystem();
+
+                if (!$fileSystem->exists($filePath))
+                    $fileSystem->mkdir($filePath);
 
                 $image->move(
                     $filePath,
@@ -178,16 +209,24 @@ class AdminController extends AbstractController
 
             if ($id == 0) {
                 $news = new News();
+            } else {
+                /** @var News $news */
+                $news = $doctrine->getRepository(News::class)->find($id);
 
-                $news->setTitle($title);
-                $news->setSubTitle($subTitle);
-                $news->setTags($tags);
-                $news->setBody($body);
+                if (!$news)
+                    throw $this->createNotFoundException("News not found!");
+            }
+
+            $news->setTitle($title);
+            $news->setSubTitle($subTitle);
+            $news->setTags($tags);
+            $news->setBody($body);
+
+            if ($fileName != null)
                 $news->setImage($fileName);
 
-                $em->persist($news);
-                $em->flush();
-            }
+            $em->persist($news);
+            $em->flush();
         }
 
         return $this->redirectToRoute('admin_news');
