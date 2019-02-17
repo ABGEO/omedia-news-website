@@ -127,4 +127,25 @@ class AdminController extends AbstractController
             'news' => $news
         ]);
     }
+
+    /**
+     * Remove news from DB
+     *
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removeNews($id)
+    {
+        $doctrine = $this->getDoctrine();
+        $em = $doctrine->getManager();
+
+        $news = $doctrine->getRepository(News::class)->find($id);
+
+        if ($news) {
+            $em->remove($news);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('admin_news');
+    }
 }

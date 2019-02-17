@@ -31,7 +31,7 @@
                 <td>{{ news.tags }}</td>
                 <td>
                     <a href="#">Edit</a> /
-                    <a href="#">Remove</a>
+                    <a href="{{ path('admin_remove_news', {'id': news.id}) }}">Remove</a>
                 </td>
             </tr>
         {% endfor %}

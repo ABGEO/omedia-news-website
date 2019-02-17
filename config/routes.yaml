@@ -46,5 +46,9 @@ admin_save_user:
 admin_news:
   path: /admin/news
   controller: App\Controller\AdminController::showNews
+
+admin_remove_news:
+  path: /admin/removeNews/{id}
+  controller: App\Controller\AdminController::removeNews
 #End News
 #End Admin-Panel
