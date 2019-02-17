@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\News;
+use App\Entity\Subscriber;
 use App\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminController extends AbstractController
@@ -170,9 +171,10 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      * @param $id
+     * @param \Swift_Mailer $mailer
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function saveNews(Request $request, $id)
+    public function saveNews(Request $request, $id, \Swift_Mailer $mailer)
     {
         $files = $request->files;
         $request = $request->request;
@@ -227,6 +229,9 @@ class AdminController extends AbstractController
 
             $em->persist($news);
             $em->flush();
+
+            if ($id == 0)
+                $this->sendAddedNewsEmail($news->getTitle(), $news->getId(), $mailer);
         }
 
         return $this->redirectToRoute('admin_news');
@@ -261,5 +266,38 @@ class AdminController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_news');
+    }
+
+
+    /**
+     * Send email about news adding to subscribers
+     *
+     * @param $newsTitle
+     * @param $newsId
+     * @param \Swift_Mailer $mailer
+     * @return AdminController
+     */
+    public function sendAddedNewsEmail($newsTitle, $newsId, \Swift_Mailer $mailer): self
+    {
+        $doctrine = $this->getDoctrine();
+        $emails = $doctrine->getRepository(Subscriber::class)->getSubscriberEmails();
+        $_emails = [];
+        foreach ($emails as $email)
+            $_emails[] = $email['email'];
+
+        $message = (new \Swift_Message('Added News!'))
+            ->setFrom('news@omediaTesting.com', 'Omedia Testing')
+            ->setTo($_emails)
+            ->setBody(
+                $this->renderView('email/added_news.html.twig', [
+                    'title' => $newsTitle,
+                    'url' => $this->generateUrl('single_news', ['id' => $newsId], UrlGeneratorInterface::ABSOLUTE_URL)
+                ]),
+                'text/html'
+            );
+
+        $mailer->send($message);
+
+        return $this;
     }
 }
