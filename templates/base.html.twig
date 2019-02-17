@@ -9,7 +9,7 @@
         <div>
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 Welcome, {{ app.user.username }}!
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
                     <a href="{{ path('admin') }}">Admin-Panel</a> |
                 {% endif %}
                 <a class="link" href="{{ path('app_logout') }}">Logout</a>

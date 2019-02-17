@@ -7,7 +7,9 @@
 
     <nav>
         <a href="{{ path('admin') }}">Main</a> |
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMIN') %}
         <a href="{{ path('admin_users') }}">Users</a> |
+        {% endif %}
         <a href="{{ path('admin_news') }}">News</a>
     </nav>
 
