@@ -58,9 +58,9 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): string
+    public function getRoles(): array
     {
-        return $this->roles;
+        return json_decode($this->roles);
     }
 
     public function setRoles(string $roles): self
