@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\News;
 use App\Entity\User;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -139,9 +140,20 @@ class AdminController extends AbstractController
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
 
+        /** @var News $news */
         $news = $doctrine->getRepository(News::class)->find($id);
 
         if ($news) {
+
+            if ($img = $news->getImage()) {
+                $fileSystem = new Filesystem();
+
+                $imgPath = __DIR__ . "/../../public/uploads/images/$img";
+
+                if ($fileSystem->exists($imgPath))
+                    $fileSystem->remove($imgPath);
+            }
+
             $em->remove($news);
             $em->flush();
         }
