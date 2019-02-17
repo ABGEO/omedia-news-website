@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block body %}
+    <article>
+        <h1>{{ news.title }}</h1>
+
+        <h2>{{ news.subTitle }}</h2>
+        <p>{{ news.tags }}</p>
+
+        <div>
+            {% if news.image != null %}
+                <img src="/uploads/images/{{ news.image }}" height="200">
+                <br>
+            {% endif %}
+
+            {{ news.body }}
+        </div>
+    </article>
+{% endblock %}

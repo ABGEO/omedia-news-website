@@ -1,3 +1,70 @@
 index:
     path: /
     controller: App\Controller\DefaultController::index
+
+single_news:
+  path: /news/{id}
+  controller: App\Controller\DefaultController::showSingleNews
+
+subscribe_news:
+  path: /subscribe
+  controller: App\Controller\DefaultController::subscribeOnNews
+
+#Authorization
+app_register:
+  path: /register
+  controller: App\Controller\RegistrationController::register
+
+app_login:
+  path: /login
+  controller: App\Controller\SecurityController::login
+
+app_logout:
+  path: /logout
+#End Authorization
+
+#Admin-Panel
+#User
+admin:
+  path: /admin
+  controller: App\Controller\AdminController::index
+
+admin_users:
+  path: /admin/users
+  controller: App\Controller\AdminController::users
+
+admin_remove_user:
+  path: /admin/removeUser/{id}
+  controller: App\Controller\AdminController::removeUser
+
+admin_edit_user:
+  path: /admin/editUser/{id}
+  controller: App\Controller\AdminController::editUser
+
+admin_save_user:
+  path: /admin/saveUser/{id}
+  controller: App\Controller\AdminController::saveUser
+#End User
+
+#News
+admin_news:
+  path: /admin/news
+  controller: App\Controller\AdminController::showNews
+
+admin_add_news:
+  path: /admin/addNews
+  controller: App\Controller\AdminController::addNews
+
+admin_edit_news:
+  path: /admin/editNews/{id}
+  controller: App\Controller\AdminController::editNews
+
+admin_save_news:
+  path: /admin/saveNews/{id}
+  controller: App\Controller\AdminController::saveNews
+
+admin_remove_news:
+  path: /admin/removeNews/{id}
+  controller: App\Controller\AdminController::removeNews
+#End News
+#End Admin-Panel

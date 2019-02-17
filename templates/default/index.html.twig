@@ -1,7 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DefaultController!{% endblock %}
+{% block title %}News{% endblock %}
 
 {% block body %}
-<h1>Hello, World!</h1>
+    <h1>News!</h1>
+
+    <p>Subscribe on news</p>
+    <form name="subscribeOnNews" method="post" action="{{ path('subscribe_news') }}">
+        <input type="hidden" name="token" value="{{ csrf_token('subscribe-on-news') }}" />
+
+        <label>
+            E-Mail:
+            <input type="email" name="email">
+        </label>
+
+        <input type="submit" value="Subscribe">
+    </form>
+
+    {% for news in news %}
+        <article>
+            <h1><a href="{{ path('single_news', {'id': news.id}) }}">{{ news.title }}</a></h1>
+
+            <h2>{{ news.subTitle }}</h2>
+            <p>{{ news.tags }}</p>
+
+            <div>
+                {{ news.body }}
+            </div>
+
+            <br>
+            <a href="{{ path('single_news', {'id': news.id}) }}">Read More -></a>
+            <hr>
+        </article>
+    {% endfor %}
 {% endblock %}

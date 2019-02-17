@@ -1,0 +1,40 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+{% endblock %}
+
+{% block admin_content %}
+    <h2>News</h2>
+
+    <a href="{{ path('admin_add_news') }}">Add News</a> <br><br>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Sub-Title</th>
+            <th>Tags</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for news in news %}
+            <tr>
+                <td>{{ news.id }}</td>
+                <td>{{ news.title }}</td>
+                <td>{{ news.subTitle }}</td>
+                <td>{{ news.tags }}</td>
+                <td>
+                    <a href="{{ path('admin_edit_news', {'id': news.id}) }}">Edit</a> /
+                    <a href="{{ path('admin_remove_news', {'id': news.id}) }}">Remove</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

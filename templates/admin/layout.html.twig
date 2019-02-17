@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin-Panel{% endblock %}
+
+{% block body %}
+    <h1>Admin-Panel</h1>
+
+    <nav>
+        <a href="{{ path('admin') }}">Main</a> |
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_users') }}">Users</a> |
+        {% endif %}
+        <a href="{{ path('admin_news') }}">News</a>
+    </nav>
+
+    {% block admin_content %}{% endblock %}
+{% endblock %}

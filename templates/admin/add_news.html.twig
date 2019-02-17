@@ -1,0 +1,46 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block admin_content %}
+    <h2>{{ edit ? 'Edit' : 'Add' }} News</h2>
+
+    <form name="addNews" method="post" action="{{ path('admin_save_news', {'id': edit ? news.id : 0}) }}" enctype="multipart/form-data">
+        <input type="hidden" name="token" value="{{ csrf_token(edit ? 'edit-news' : 'add-news') }}" />
+
+        <label>
+            Title:<br>
+            <input type="text" name="title" value="{{ edit ? news.title : '' }}">
+        </label>
+
+        <br><br>
+
+        <label>
+            Sub-Title:<br>
+            <input type="text" name="subTitle" value="{{ edit ? news.subTitle : '' }}">
+        </label>
+
+        <br><br>
+
+        <label>
+            Tags:<br>
+            <input type="text" name="tags" value="{{ edit ? news.tags : '' }}">
+        </label>
+
+        <br><br>
+
+        <label>
+            Text:<br>
+            <textarea name="body">{{ edit ? news.body : '' }}</textarea>
+        </label>
+
+        <br><br>
+
+        <label>
+            Image:<br>
+            <input type="file" name="image">
+        </label>
+
+        <br><br>
+
+        <input type="submit" value="{{ edit ? 'Edit' : 'Add' }}">
+    </form>
+{% endblock %}
