@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\News;
 use App\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminController extends AbstractController
@@ -130,6 +132,68 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Show News adding form
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addNews()
+    {
+        return $this->render('admin/add_news.html.twig');
+    }
+
+    /**
+     * Show News adding form
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function saveNews(Request $request, $id)
+    {
+        $files = $request->files;
+        $request = $request->request;
+
+        $token = $request->get('token');
+        $title = $request->get('title');
+        $subTitle = $request->get('subTitle');
+        $tags = $request->get('tags');
+        $body = $request->get('body');
+        /** @var File $image */
+        $image = $files->get('image');
+        $fileName = null;
+
+        if ($this->isCsrfTokenValid('add-news', $token)) {
+            if ($image) {
+                $filePath = __DIR__ . "/../../public/uploads/images/";
+                $fileName = md5($image->getBasename().time()).'.'.$image->guessExtension();
+
+                $image->move(
+                    $filePath,
+                    $fileName
+                );
+            }
+
+            $doctrine = $this->getDoctrine();
+            $em = $doctrine->getManager();
+
+            if ($id == 0) {
+                $news = new News();
+
+                $news->setTitle($title);
+                $news->setSubTitle($subTitle);
+                $news->setTags($tags);
+                $news->setBody($body);
+                $news->setImage($fileName);
+
+                $em->persist($news);
+                $em->flush();
+            }
+        }
+
+        return $this->redirectToRoute('admin_news');
+    }
+
+    /**
      * Remove news from DB
      *
      * @param $id
@@ -144,7 +208,6 @@ class AdminController extends AbstractController
         $news = $doctrine->getRepository(News::class)->find($id);
 
         if ($news) {
-
             if ($img = $news->getImage()) {
                 $fileSystem = new Filesystem();
 

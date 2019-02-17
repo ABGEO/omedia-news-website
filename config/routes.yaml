@@ -47,6 +47,14 @@ admin_news:
   path: /admin/news
   controller: App\Controller\AdminController::showNews
 
+admin_add_news:
+  path: /admin/addNews
+  controller: App\Controller\AdminController::addNews
+
+admin_save_news:
+  path: /admin/saveNews/{id}
+  controller: App\Controller\AdminController::saveNews
+
 admin_remove_news:
   path: /admin/removeNews/{id}
   controller: App\Controller\AdminController::removeNews
