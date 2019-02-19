@@ -58,4 +58,16 @@ class DefaultController extends AbstractController
 
         return $this->redirectToRoute('index');
     }
+
+    public function searchNews(Request $request)
+    {
+        $query = $request->query->get('query');
+
+        $doctrine = $this->getDoctrine();
+        $news = $doctrine->getRepository(News::class)->findInTitle($query);
+
+        return $this->render('default/index.html.twig', [
+            'news' => $news,
+        ]);
+    }
 }
