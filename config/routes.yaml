@@ -10,6 +10,10 @@ subscribe_news:
   path: /subscribe
   controller: App\Controller\DefaultController::subscribeOnNews
 
+search_news:
+  path: /search
+  controller: App\Controller\DefaultController::searchNews
+
 #Authorization
 app_register:
   path: /register
