@@ -9,10 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends AbstractController
 {
-    public function index()
+    public function index(Request $request)
     {
+        $tag = $request->query->get('tag');
         $doctrine = $this->getDoctrine();
-        $news = $doctrine->getRepository(News::class)->findAll();
+        $newsRepo = $doctrine->getRepository(News::class);
+
+        $news = null;
+        if ($tag != null || $tag != '')
+            $news = $newsRepo->findInTag($tag);
+        else
+            $news = $newsRepo->findAll();
 
         return $this->render('default/index.html.twig', [
             'news' => $news,
