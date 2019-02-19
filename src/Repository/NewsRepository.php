@@ -33,6 +33,20 @@ class NewsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param $tag
+     * @return News[] Returns an array of News objects
+     */
+    public function findInTag($tag)
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.tags like :tag')
+            ->setParameter('tag', "%{$tag}%")
+            ->orderBy('n.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     /*
     public function findOneBySomeField($value): ?News

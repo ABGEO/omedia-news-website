@@ -35,12 +35,25 @@
     </form>
     {% endif %}
 
+    {% if app.request.get('tag') != null %}
+    <p>
+        News by Tag: <b>{{ app.request.get('tag') }}</b>
+        <a href="{{ path('index') }}">Clear</a>
+    </p>
+    <hr>
+    {% endif %}
+
     {% for news in news %}
         <article>
             <h1><a href="{{ path('single_news', {'id': news.id}) }}">{{ news.title }}</a></h1>
 
             <h2>{{ news.subTitle }}</h2>
-            <p>{{ news.tags }}</p>
+            {% set tags = news.tags|split(',') %}
+            <p>
+                {% for tag in tags %}
+                    <a href="{{ path('index', {'tag': tag|trim}) }}">{{ tag }}</a>
+                {% endfor %}
+            </p>
 
             <div>
                 {{ news.body }}
